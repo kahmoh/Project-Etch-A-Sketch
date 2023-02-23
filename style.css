@@ -15,5 +15,7 @@ body {
 }
 
 .grid-container {
-    border: solid
+    border: solid;
+    width: 80%;
+    height: 80%;
 }
