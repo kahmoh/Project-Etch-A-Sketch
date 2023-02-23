@@ -1,4 +1,14 @@
 const CONTAINER = document.querySelector('.grid-container')
+const COLORLABEL = document.querySelector('#color-picker-label');
+const COLORINPUT = document.querySelector('#color-picker-input');
+
+COLORLABEL.addEventListener('click', () => {
+    COLORINPUT.click();
+});
+
+COLORINPUT.addEventListener('change', () => {
+    COLORLABEL.textContent = `Selected color: ${COLORINPUT.value}`;
+});
 let isPainting = false;
 
 function createGrid(rows,cols) {
@@ -25,12 +35,12 @@ function createGrid(rows,cols) {
         })
 
         cell.addEventListener('click', (event) => {
-            event.target.style.backgroundColor = '#000'
+            event.target.style.backgroundColor = COLORINPUT.value
         })
 
         cell.addEventListener('mouseover', (event) => {
             if (isPainting) {
-                event.target.style.backgroundColor = '#000'
+                event.target.style.backgroundColor = COLORINPUT.value
             }
         });
 
