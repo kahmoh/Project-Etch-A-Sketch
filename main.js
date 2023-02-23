@@ -1,15 +1,27 @@
 const CONTAINER = document.querySelector('.grid-container')
 const COLORLABEL = document.querySelector('#color-picker-label');
 const COLORINPUT = document.querySelector('#color-picker-input');
+const ERASERBTN = document.querySelector('.eraser')
+
+let paintMode = true;
+let eraseMode = false;
+let isPainting = false;
+let isErasing = false;
 
 COLORLABEL.addEventListener('click', () => {
     COLORINPUT.click();
+    paintMode = true;
+    eraseMode = false;
 });
 
 COLORINPUT.addEventListener('change', () => {
     COLORLABEL.textContent = `Selected color: ${COLORINPUT.value}`;
 });
-let isPainting = false;
+
+ERASERBTN.addEventListener('click', () => {
+    eraseMode = true;
+    paintMode = false;
+})
 
 function createGrid(rows,cols) {
     CONTAINER.style.display = 'grid';
@@ -27,28 +39,52 @@ function createGrid(rows,cols) {
         CONTAINER.style.backgroundColor = '#fff';
 
         cell.addEventListener('mousedown', () => {
-            isPainting = true;
+            if (paintMode) {
+                isPainting = true;
+            }else if (eraseMode){
+                isErasing = true;
+            }
         })
 
         cell.addEventListener('mouseup', () => {
-            isPainting = false;
+            if (paintMode) {
+                isPainting = false;
+            }else if (eraseMode){
+                isErasing = false;
+            }
         })
 
         cell.addEventListener('click', (event) => {
-            event.target.style.backgroundColor = COLORINPUT.value
+            if (paintMode) {
+                event.target.style.backgroundColor = COLORINPUT.value
+            }else if (eraseMode) {
+                event.target.style.backgroundColor = '#fff'
+            }
         })
 
         cell.addEventListener('mouseover', (event) => {
-            if (isPainting) {
+            if (isPainting && paintMode) {
                 event.target.style.backgroundColor = COLORINPUT.value
             }
+            if (isErasing && eraseMode) {
+                event.target.style.backgroundColor = '#fff'
+            }
         });
-
-
 
         CONTAINER.appendChild(cell);
 
     }
 }
+
+function resizeGrid() {
+    const viewportSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+    const cellSize = viewportSize / 32;
+
+    CONTAINER.style.width = `${viewportSize}px`;
+    CONTAINER.style.height = `${viewportSize}px`;
+    CONTAINER.style.gridTemplateColumns = `repeat(32, ${cellSize}px)`;
+}
+
+window.addEventListener('resize', resizeGrid);
 
 createGrid(32,32)
