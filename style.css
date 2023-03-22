@@ -21,18 +21,13 @@ body {
 }
 
 .bottom-bar {
+    width: 40vw;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     color: white;
     -webkit-text-stroke: 1px black;
     font-size: 30px;
     margin-top: 20px;
     flex-wrap: wrap;
-}
-
-@media only screen and (min-width: 600px) {
-    #color-picker-label {
-        margin-left: 200px;
-    }
 }

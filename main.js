@@ -1,7 +1,8 @@
 const CONTAINER = document.querySelector('.grid-container')
 const COLORLABEL = document.querySelector('#color-picker-label');
 const COLORINPUT = document.querySelector('#color-picker-input');
-const ERASERBTN = document.querySelector('.eraser')
+const ERASER = document.querySelector('.eraser')
+const RESIZE = document.querySelector('#resize-button')
 
 let paintMode = true;
 let eraseMode = false;
@@ -18,9 +19,13 @@ COLORINPUT.addEventListener('change', () => {
     COLORLABEL.textContent = `Selected color: ${COLORINPUT.value}`;
 });
 
-ERASERBTN.addEventListener('click', () => {
+ERASER.addEventListener('click', () => {
     eraseMode = true;
     paintMode = false;
+})
+
+RESIZE.addEventListener('click', () => {
+    promptGridSize()
 })
 
 function createGrid(rows,cols) {
@@ -71,6 +76,35 @@ function createGrid(rows,cols) {
             }
         });
 
+        cell.addEventListener('touchstart', () => {
+            if (paintMode) {
+                isPainting = true;
+            } else if (eraseMode){
+                isErasing = true;
+            }
+        })
+
+        // Add touchend event for mobile devices
+        cell.addEventListener('touchend', () => {
+            if (paintMode) {
+                isPainting = false;
+            } else if (eraseMode){
+                isErasing = false;
+            }
+        })
+
+        // Add touchmove event for mobile devices
+        cell.addEventListener('touchmove', (event) => {
+            event.preventDefault(); // prevent scrolling
+            if (isPainting && paintMode) {
+                event.target.style.backgroundColor = COLORINPUT.value
+            }
+            if (isErasing && eraseMode) {
+                event.target.style.backgroundColor = '#fff'
+            }
+        });
+
+
         CONTAINER.appendChild(cell);
 
     }
@@ -86,5 +120,15 @@ function resizeGrid() {
 }
 
 window.addEventListener('resize', resizeGrid);
+
+function promptGridSize () {
+    let value = prompt ('How big do you want the canvas?')
+    if (value>100) {
+        alert('too big')
+    }else{
+        CONTAINER.innerHTML = ''
+        createGrid(value,value)
+    }
+}
 
 createGrid(32,32)
