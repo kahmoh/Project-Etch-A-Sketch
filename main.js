@@ -4,6 +4,7 @@ const COLORINPUT = document.querySelector('#color-picker-input');
 const ERASER = document.querySelector('.eraser')
 const RESIZE = document.querySelector('#resize-button')
 const clear = document.querySelector('#clear')
+const rainbow = document.querySelector('#rainbow')
 
 let gridSize = 32;
 
@@ -11,20 +12,28 @@ let paintMode = true;
 let eraseMode = false;
 let isPainting = false;
 let isErasing = false;
+let rainbowMode = false;
 
-COLORLABEL.addEventListener('click', () => {
-    COLORINPUT.click();
-    paintMode = true;
-    eraseMode = false;
-});
+function rgb() {
+    let R = Math.floor(Math.random() * 255)
+    let G = Math.floor(Math.random() * 255)
+    let B = Math.floor(Math.random() * 255)
+    return `rgb(${R},${G},${B})`
+}
+
+console.log(rgb())
 
 COLORINPUT.addEventListener('change', () => {
     COLORLABEL.textContent = `${COLORINPUT.value}`;
+    paintMode = true;
+    eraseMode = false;
+    rainbowMode = false;
 });
 
 ERASER.addEventListener('click', () => {
     eraseMode = true;
     paintMode = false;
+    rainbowMode = false;
 })
 
 RESIZE.addEventListener('click', () => {
@@ -32,7 +41,12 @@ RESIZE.addEventListener('click', () => {
 })
 
 clear.addEventListener('click', () => {
-    createGrid(gridSize,gridSize)
+    createGrid(gridSize, gridSize)
+})
+
+rainbow.addEventListener('click', () => {
+    rainbowMode = true;
+    paintMode = true;
 })
 
 function createGrid(rows, cols) {
@@ -71,7 +85,7 @@ function createGrid(rows, cols) {
 
         cell.addEventListener('click', (event) => {
             if (paintMode) {
-                event.target.style.backgroundColor = COLORINPUT.value
+                event.target.style.backgroundColor = (rainbowMode) ? rgb() : COLORINPUT.value
             } else if (eraseMode) {
                 event.target.style.backgroundColor = '#fff'
             }
@@ -79,7 +93,7 @@ function createGrid(rows, cols) {
 
         cell.addEventListener('mouseover', (event) => {
             if (isPainting && paintMode) {
-                event.target.style.backgroundColor = COLORINPUT.value
+                event.target.style.backgroundColor = (rainbowMode) ? rgb() : COLORINPUT.value
             }
             if (isErasing && eraseMode) {
                 event.target.style.backgroundColor = '#fff'
