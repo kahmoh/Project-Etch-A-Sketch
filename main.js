@@ -21,8 +21,6 @@ function rgb() {
     return `rgb(${R},${G},${B})`
 }
 
-console.log(rgb())
-
 COLORINPUT.addEventListener('change', () => {
     COLORLABEL.textContent = `${COLORINPUT.value}`;
     paintMode = true;
@@ -148,6 +146,10 @@ window.addEventListener('resize', resizeGrid);
 function promptGridSize() {
     let promptResponse = prompt('How big do you want the canvas?')
     let value = parseInt(promptResponse)
+    if (promptResponse === null) {
+        return;
+    }
+
     if (value > 100) {
         alert('too big')
         promptGridSize()
