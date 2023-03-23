@@ -28,7 +28,7 @@ RESIZE.addEventListener('click', () => {
     promptGridSize()
 })
 
-function createGrid(rows,cols) {
+function createGrid(rows, cols) {
     CONTAINER.style.display = 'grid';
     CONTAINER.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     CONTAINER.style.gridAutoRows = '1fr';
@@ -46,7 +46,7 @@ function createGrid(rows,cols) {
         cell.addEventListener('mousedown', () => {
             if (paintMode) {
                 isPainting = true;
-            }else if (eraseMode){
+            } else if (eraseMode) {
                 isErasing = true;
             }
         })
@@ -54,7 +54,7 @@ function createGrid(rows,cols) {
         cell.addEventListener('mouseup', () => {
             if (paintMode) {
                 isPainting = false;
-            }else if (eraseMode){
+            } else if (eraseMode) {
                 isErasing = false;
             }
         })
@@ -62,7 +62,7 @@ function createGrid(rows,cols) {
         cell.addEventListener('click', (event) => {
             if (paintMode) {
                 event.target.style.backgroundColor = COLORINPUT.value
-            }else if (eraseMode) {
+            } else if (eraseMode) {
                 event.target.style.backgroundColor = '#fff'
             }
         })
@@ -79,7 +79,7 @@ function createGrid(rows,cols) {
         cell.addEventListener('touchstart', () => {
             if (paintMode) {
                 isPainting = true;
-            } else if (eraseMode){
+            } else if (eraseMode) {
                 isErasing = true;
             }
         })
@@ -88,7 +88,7 @@ function createGrid(rows,cols) {
         cell.addEventListener('touchend', () => {
             if (paintMode) {
                 isPainting = false;
-            } else if (eraseMode){
+            } else if (eraseMode) {
                 isErasing = false;
             }
         })
@@ -121,14 +121,22 @@ function resizeGrid() {
 
 window.addEventListener('resize', resizeGrid);
 
-function promptGridSize () {
-    let value = prompt ('How big do you want the canvas?')
-    if (value>100) {
+function promptGridSize() {
+    let promptResponse = prompt('How big do you want the canvas?')
+    let value = parseInt(promptResponse)
+    if (value > 100) {
         alert('too big')
-    }else{
+        promptGridSize()
+    } else if (value < 8) {
+        alert('too small')
+        promptGridSize()
+    } else if (isNaN(value)) {
+        alert('must input a number')
+        promptGridSize()
+    } else {
         CONTAINER.innerHTML = ''
-        createGrid(value,value)
+        createGrid(value, value)
     }
 }
 
-createGrid(32,32)
+createGrid(32, 32)
