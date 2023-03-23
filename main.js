@@ -3,6 +3,9 @@ const COLORLABEL = document.querySelector('#color-picker-label');
 const COLORINPUT = document.querySelector('#color-picker-input');
 const ERASER = document.querySelector('.eraser')
 const RESIZE = document.querySelector('#resize-button')
+const clear = document.querySelector('#clear')
+
+let gridSize = 32;
 
 let paintMode = true;
 let eraseMode = false;
@@ -16,7 +19,7 @@ COLORLABEL.addEventListener('click', () => {
 });
 
 COLORINPUT.addEventListener('change', () => {
-    COLORLABEL.textContent = `Selected color: ${COLORINPUT.value}`;
+    COLORLABEL.textContent = `${COLORINPUT.value}`;
 });
 
 ERASER.addEventListener('click', () => {
@@ -28,7 +31,14 @@ RESIZE.addEventListener('click', () => {
     promptGridSize()
 })
 
+clear.addEventListener('click', () => {
+    createGrid(gridSize,gridSize)
+})
+
 function createGrid(rows, cols) {
+
+    CONTAINER.innerHTML = ''
+
     CONTAINER.style.display = 'grid';
     CONTAINER.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     CONTAINER.style.gridAutoRows = '1fr';
@@ -136,7 +146,8 @@ function promptGridSize() {
     } else {
         CONTAINER.innerHTML = ''
         createGrid(value, value)
+        gridSize = value
     }
 }
 
-createGrid(32, 32)
+createGrid(gridSize, gridSize)
